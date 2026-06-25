@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ready Pro Academy - الفواتير</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal',sans-serif;background:#0B1F3A;color:#F0F4F8;min-height:100vh}
+.p{padding:14px;max-width:900px;margin:0 auto}
+nav{display:flex;align-items:center;justify-content:space-between;background:#0F2035;border:1px solid rgba(29,185,84,.3);border-radius:10px;padding:10px 14px;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-i{width:36px;height:36px;border-radius:50%;background:#1DB954;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#0B1F3A}
+.logo-t{font-size:15px;font-weight:700;color:#1DB954}
+.logo-t span{color:#F0F4F8;font-weight:400}
+.btns{display:flex;gap:6px}
+.btn{padding:7px 14px;border-radius:7px;border:1px solid rgba(29,185,84,.3);background:transparent;color:#F0F4F8;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700}
+.btn.act{background:#1DB954;color:#0B1F3A;border-color:#1DB954}
+.card{background:#0F2035;border:1px solid rgba(29,185,84,.25);border-radius:10px;padding:14px;margin-bottom:12px}
+.fg{margin-bottom:10px}
+.fg label{display:block;font-size:11px;font-weight:700;color:#7A8FA6;margin-bottom:4px}
+.fg input,.fg select,.fg textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px 11px;color:#F0F4F8;font-family:'Tajawal',sans-serif;font-size:13px;outline:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#1DB954}
+.fg select option{background:#112240}
+.fg textarea{resize:vertical;min-height:60px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.calc{background:rgba(29,185,84,.08);border:1px solid rgba(29,185,84,.25);border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.sbtn{width:100%;padding:11px;background:#1DB954;color:#0B1F3A;border:none;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:900}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stat{background:#0F2035;border:1px solid rgba(29,185,84,.25);border-radius:9px;padding:12px;text-align:center}
+.stat-n{font-size:22px;font-weight:900;color:#1DB954}
+.stat-l{font-size:10px;color:#7A8FA6;margin-top:2px}
+.filt{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.filt .btn{font-size:11px;padding:5px 10px}
+.tbl{background:#0F2035;border:1px solid rgba(29,185,84,.25);border-radius:10px;overflow:hidden}
+.tbl-h{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.srch{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:6px 10px;color:#F0F4F8;font-family:'Tajawal',sans-serif;font-size:12px;outline:none;width:140px}
+table{width:100%;border-collapse:collapse}
+th{padding:8px 10px;text-align:right;font-size:10px;color:#7A8FA6;border-bottom:1px solid rgba(255,255,255,.06)}
+td{padding:9px 10px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.04)}
+tr:last-child td{border-bottom:none}
+.bg{background:rgba(29,185,84,.12);color:#1DB954;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:700}
+.bo{background:rgba(251,146,60,.12);color:#FB923C;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:700}
+.br{background:rgba(239,68,68,.12);color:#EF4444;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:700}
+.bs{padding:4px 9px;border-radius:5px;border:1px solid rgba(29,185,84,.3);background:transparent;color:#1DB954;cursor:pointer;font-size:10px;font-family:'Tajawal',sans-serif;font-weight:700;margin-left:2px}
+.bs.r{border-color:rgba(239,68,68,.3);color:#EF4444}
+#inv-view{display:none}
+.inv-wrap{background:#fff;color:#1a1a1a;max-width:600px;margin:0 auto;border-radius:12px;padding:30px 36px;box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.inv-logo{text-align:center;margin-bottom:22px}
+.inv-logo .rl{width:64px;height:64px;border-radius:50%;background:#1DB954;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#0B1F3A;margin:0 auto}
+.inv-box{border:1px solid #D6E4DC;border-radius:9px;padding:16px 20px}
+.inv-r{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #F0F4F2;font-size:13px;flex-wrap:wrap;gap:4px}
+.inv-r:last-child{border-bottom:none}
+.inv-l{font-weight:700;color:#1a1a1a}
+.cbl{color:#1F4E8C;font-weight:700}
+.cgr{color:#1DB954;font-weight:700;font-size:15px}
+.crd{color:#C0392B;font-weight:700}
+.cdk{color:#1a1a1a;font-weight:700}
+.inv-acts{display:flex;gap:8px;justify-content:center;margin:14px 0}
+.toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#112240;border:1px solid rgba(29,185,84,.3);border-radius:8px;padding:9px 18px;font-size:13px;color:#F0F4F8;display:none;z-index:99;text-align:center;white-space:nowrap}
+@media print{body *{visibility:hidden}#inv-view,#inv-view *{visibility:visible}#inv-view{display:block!important;position:absolute;top:0;left:0;width:100%}.inv-acts{display:none!important}}
+@media(max-width:500px){.grid2,.stats{grid-template-columns:1fr}.inv-wrap{padding:18px 14px}}
+</style>
+</head>
+<body>
+<div class="p" id="main">
+<nav>
+  <div class="logo">
+    <div class="logo-i">R</div>
+    <div class="logo-t">Ready <span>Pro</span> Academy</div>
+  </div>
+  <div class="btns">
+    <button class="btn act" id="t-new" onclick="go('new')">+ فاتورة جديدة</button>
+    <button class="btn" id="t-all" onclick="go('all')">كل الفواتير</button>
+  </div>
+</nav>
+
+<div class="card">
+  <div style="font-size:13px;font-weight:700;color:#1DB954;margin-bottom:8px">🔍 بحث سريع</div>
+  <div style="display:flex;gap:8px">
+    <input id="qs" placeholder="كود الطالب أو رقم الفاتورة" style="flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px 11px;color:#F0F4F8;font-family:'Tajawal',sans-serif;font-size:13px;outline:none" onkeydown="if(event.key==='Enter')qsearch()">
+    <button class="sbtn" style="width:auto;padding:9px 16px" onclick="qsearch()">بحث</button>
+  </div>
+  <div id="qr" style="margin-top:8px"></div>
+</div>
+
+<div id="v-new">
+<div class="card">
+  <div class="grid2">
+    <div class="fg"><label>اسم الطالب</label><input id="fn" placeholder="هبة ممدوح أحمد محمد"></div>
+    <div class="fg"><label>كود الطالب</label><input id="fs" placeholder="1220040"></div>
+    <div class="fg"><label>الدورة</label>
+      <select id="fc" onchange="cch()">
+        <option value="d">ET - دبلومة اللغة الإنجليزية للمدرسين</option>
+        <option value="g">General English - اللغة الإنجليزية العامة للبالغين</option>
+        <option value="t">Teens English - اللغة الإنجليزية للمراهقين</option>
+        <option value="s">Sales & Customer Service - المبيعات وخدمة العملاء</option>
+        <option value="c">Call Center - تدريب كول سنتر</option>
+      </select>
+    </div>
+    <div class="fg"><label>شهر بدء الدورة</label><input id="fsm" placeholder="6/2026"></div>
+    <div class="fg" id="lf" style="display:none"><label>عدد الليفلز</label><input id="fl" type="number" min="1" value="1" oninput="cch()"></div>
+    <div class="fg"><label>نوع التقديم</label>
+      <select id="frt"><option>أون لاين</option><option>حضوري</option></select>
+    </div>
+    <div class="fg"><label>القيمة (ج)</label><input id="fp" type="number" min="0" oninput="uc()"></div>
+    <div class="fg"><label>الخصم (ج)</label><input id="fd" type="number" min="0" value="0" oninput="uc()"></div>
+    <div class="fg"><label>المسدد مقدماً (ج)</label><input id="fpa" type="number" min="0" value="0" oninput="uc()"></div>
+    <div class="fg"><label>طريقة السداد</label>
+      <select id="fm">
+        <option>فودافون كاش</option><option>كاش</option><option>إنستاباي</option>
+        <option>تحويل بنكي</option><option>اتصالات كاش</option><option>اورنج كاش</option><option>أون لاين</option>
+      </select>
+    </div>
+    <div class="fg"><label>تاريخ السداد التالي</label><input id="fnd" type="date"></div>
+    <div class="fg"><label>التاريخ</label><input id="fdt" type="date"></div>
+    <div class="fg"><label>الفرع</label>
+      <select id="fbr"><option>المركز الرئيسي</option><option>الفرع الثاني</option></select>
+    </div>
+    <div class="fg"><label>Customer Support</label>
+      <select id="fsp"><option value="">-- اختر --</option><option>ريهام</option><option>ملك</option></select>
+    </div>
+    <div class="fg"><label>مسئول المبيعات</label>
+      <select id="fsl"><option value="">-- اختر --</option><option>محمود</option><option>تيسير</option><option>سمية</option></select>
+    </div>
+  </div>
+  <div class="calc">
+    <div><span style="color:#7A8FA6;font-size:11px">صافي الفاتورة:</span> <strong id="cn" style="color:#1DB954;font-size:16px">0</strong> ج</div>
+    <div><span style="color:#7A8FA6;font-size:11px">باقي غير مسدد:</span> <strong id="cr" style="color:#FB923C;font-size:16px">0</strong> ج</div>
+  </div>
+  <div class="fg"><label>ملاحظات</label>
+    <textarea id="fno">القسط الاول 1250 ج يسدد قبل بداية الكورس بأسبوع
+القسط الثاني 1250 ج
+القسط الثالث 1250 ج
+القسط الرابع 1250 ج</textarea>
+  </div>
+  <button class="sbtn" id="sbtn" onclick="save_inv()">+ إنشاء الفاتورة</button>
+</div>
+</div>
+
+<div id="v-all" style="display:none">
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="sc">0</div><div class="stat-l">عدد الفواتير</div></div>
+    <div class="stat"><div class="stat-n" id="sp">0</div><div class="stat-l">المسدد (ج)</div></div>
+    <div class="stat"><div class="stat-n" id="sd">0</div><div class="stat-l">المتبقي (ج)</div></div>
+  </div>
+  <div class="filt">
+    <button class="btn act" id="fa" onclick="sf('a')">الكل</button>
+    <button class="btn" id="ft" onclick="sf('t')">📅 النهارده</button>
+    <button class="btn" id="fd2" onclick="sf('d2')">⚠️ باقي عليهم</button>
+    <button class="btn" id="fd3" onclick="sf('d3')">ET</button>
+    <button class="btn" id="fg2" onclick="sf('g2')">General</button>
+    <button class="btn" id="ftn" onclick="sf('tn')">Teens</button>
+    <button class="btn" id="fsl2" onclick="sf('sl2')">Sales</button>
+    <button class="btn" id="fcc" onclick="sf('cc')">Call Center</button>
+  </div>
+  <div class="tbl">
+    <div class="tbl-h">
+      <span id="fl2" style="font-weight:700;font-size:13px">كل الفواتير</span>
+      <input class="srch" id="sr" placeholder="بحث..." oninput="rt()">
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>رقم</th><th>الطالب</th><th>الدورة</th><th>الصافي</th><th>الحالة</th><th>التاريخ</th><th>أدوات</th></tr></thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="inv-view">
+  <div class="p">
+    <div class="inv-acts">
+      <button class="btn" onclick="ci()">← رجوع</button>
+      <button class="sbtn" style="width:auto;padding:9px 18px" onclick="window.print()">🖨️ طباعة / PDF</button>
+    </div>
+    <div class="inv-wrap">
+      <div class="inv-logo"><div class="rl">R</div></div>
+      <div class="inv-box" id="ic"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var SU = "https://script.google.com/macros/s/AKfycbxazLJ0rf8kBwxjZvXKaXUbYk6R3Faf7Ulp4ElLj0GOLZfEPiRd-zpzl4nsp-N1Gl8/exec";
+var INV = JSON.parse(localStorage.getItem("rpa4") || "[]");
+var EID = null;
+var CF = "a";
+
+var CN = {
+  d: "ET - دبلومة اللغة الإنجليزية للمدرسين",
+  g: "General English - اللغة الإنجليزية العامة للبالغين",
+  t: "Teens English - اللغة الإنجليزية للمراهقين",
+  s: "Sales & Customer Service - المبيعات وخدمة العملاء",
+  c: "Call Center - تدريب كول سنتر"
+};
+
+var CP = { d: 7500, g: 1500, t: 1500, s: 1500, c: 1500 };
+
+function sv() { localStorage.setItem("rpa4", JSON.stringify(INV)); }
+
+function init() {
+  document.getElementById("fdt").valueAsDate = new Date();
+  cch();
+  load();
+}
+
+function cch() {
+  var k = document.getElementById("fc").value;
+  var lf = document.getElementById("lf");
+  var fp = document.getElementById("fp");
+  if (k === "g" || k === "t") {
+    lf.style.display = "block";
+    var l = parseInt(document.getElementById("fl").value) || 1;
+    fp.value = l * CP[k];
+  } else {
+    lf.style.display = "none";
+    fp.value = CP[k] || 0;
+  }
+  document.getElementById("fd").value = "0";
+  document.getElementById("fpa").value = "0";
+  uc();
+}
+
+function uc() {
+  var p = parseFloat(document.getElementById("fp").value) || 0;
+  var d = parseFloat(document.getElementById("fd").value) || 0;
+  var pa = parseFloat(document.getElementById("fpa").value) || 0;
+  var n = Math.max(0, p - d);
+  var r = Math.max(0, n - pa);
+  document.getElementById("cn").textContent = n.toLocaleString();
+  document.getElementById("cr").textContent = r.toLocaleString();
+}
+
+function go(t) {
+  document.getElementById("v-new").style.display = t === "new" ? "block" : "none";
+  document.getElementById("v-all").style.display = t === "all" ? "block" : "none";
+  document.getElementById("t-new").className = "btn" + (t === "new" ? " act" : "");
+  document.getElementById("t-all").className = "btn" + (t === "all" ? " act" : "");
+  if (t === "all") { rs(); rt(); }
+}
+
+function gd(s) {
+  if (!s) return "";
+  s = String(s);
+  if (s.indexOf("T") > -1) {
+    var d = new Date(s);
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  return s.split("T")[0];
+}
+
+function fd2(s) {
+  if (!s) return "—";
+  var c = gd(s);
+  var p = c.split("-");
+  return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : s;
+}
+
+function gs(inv) {
+  var n = parseFloat(inv.net) || 0;
+  var pa = parseFloat(inv.paid) || 0;
+  var r = parseFloat(inv.remaining);
+  if (isNaN(r)) r = n - pa;
+  if (r > 0) return pa > 0 ? { l: "جزئياً", c: "bo" } : { l: "غير مدفوعة", c: "br" };
+  return { l: "مدفوعة", c: "bg" };
+}
+
+function gnum() { return String(250000 + INV.length + 1); }
+
+function selv(id, v) {
+  var s = document.getElementById(id);
+  if (!s) return;
+  for (var i = 0; i < s.options.length; i++) {
+    if (s.options[i].value === v || s.options[i].text === v) { s.selectedIndex = i; return; }
+  }
+}
+
+function save_inv() {
+  var name = document.getElementById("fn").value.trim();
+  if (!name) { toast("❌ ادخل اسم الطالب"); return; }
+  var sid = document.getElementById("fs").value.trim();
+  var p = parseFloat(document.getElementById("fp").value) || 0;
+  var d = parseFloat(document.getElementById("fd").value) || 0;
+  var pa = parseFloat(document.getElementById("fpa").value) || 0;
+  var n = Math.max(0, p - d);
+  var r = parseFloat((n - pa).toFixed(2));
+  if (r < 0) r = 0;
+  var ck = document.getElementById("fc").value;
+  var cn = CN[ck] || ck;
+  if (ck === "g" || ck === "t") {
+    var l = parseInt(document.getElementById("fl").value) || 1;
+    cn += " (" + l + " ليفل)";
+  }
+  var inv = {
+    id: EID || (sid || gnum()),
+    name: name, studentId: sid, course: cn,
+    startMonth: document.getElementById("fsm").value.trim(),
+    regType: document.getElementById("frt").value,
+    price: p, discount: d, net: n, paid: pa, remaining: r,
+    method: document.getElementById("fm").value,
+    nextDate: document.getElementById("fnd").value,
+    date: document.getElementById("fdt").value,
+    branch: document.getElementById("fbr").value,
+    support: document.getElementById("fsp").value,
+    sales: document.getElementById("fsl").value,
+    notes: document.getElementById("fno").value.trim(),
+    createdAt: new Date().toISOString()
+  };
+  if (EID) {
+    var i = INV.findIndex(function(x) { return x.id === EID; });
+    if (i > -1) INV[i] = inv;
+    EID = null;
+    document.getElementById("sbtn").textContent = "+ إنشاء الفاتورة";
+    toast("✅ تم تعديل الفاتورة " + inv.id);
+  } else {
+    INV.unshift(inv);
+    toast("✅ تم إنشاء الفاتورة " + inv.id);
+  }
+  sv(); rf();
+  fetch(SU, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "upsert", invoice: inv }) }).catch(function() {});
+  oi(inv.id);
+}
+
+function rf() {
+  document.getElementById("fn").value = "";
+  document.getElementById("fs").value = "";
+  document.getElementById("fsm").value = "";
+  document.getElementById("fno").value = "القسط الاول 1250 ج يسدد قبل بداية الكورس بأسبوع\nالقسط الثاني 1250 ج\nالقسط الثالث 1250 ج\nالقسط الرابع 1250 ج";
+  document.getElementById("fl").value = "1";
+  document.getElementById("fdt").valueAsDate = new Date();
+  cch();
+}
+
+function di(id) {
+  if (!confirm("حذف الفاتورة " + id + "؟")) return;
+  INV = INV.filter(function(i) { return i.id !== id; });
+  sv(); rs(); rt();
+  toast("🗑️ تم الحذف");
+  fetch(SU, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "delete", id: id }) }).catch(function() {});
+}
+
+function ei(id) {
+  var inv = INV.find(function(i) { return i.id === id; });
+  if (!inv) return;
+  EID = id;
+  document.getElementById("fn").value = inv.name || "";
+  document.getElementById("fs").value = inv.studentId || "";
+  document.getElementById("fsm").value = inv.startMonth || "";
+  document.getElementById("fp").value = inv.price || 0;
+  document.getElementById("fd").value = inv.discount || 0;
+  document.getElementById("fpa").value = inv.paid || 0;
+  document.getElementById("fnd").value = inv.nextDate || "";
+  document.getElementById("fdt").value = gd(inv.date) || "";
+  document.getElementById("fno").value = inv.notes || "";
+  selv("fbr", inv.branch); selv("fm", inv.method);
+  selv("frt", inv.regType); selv("fsp", inv.support); selv("fsl", inv.sales);
+  var ck = "d";
+  for (var k in CN) { if ((inv.course || "").indexOf(CN[k]) === 0) { ck = k; break; } }
+  document.getElementById("fc").value = ck;
+  if (ck === "g" || ck === "t") {
+    var m = (inv.course || "").match(/\((\d+)\s*ليفل\)/);
+    document.getElementById("fl").value = m ? m[1] : "1";
+  }
+  uc();
+  document.getElementById("sbtn").textContent = "💾 حفظ التعديلات";
+  go("new"); window.scrollTo(0, 0);
+}
+
+function load() {
+  fetch(SU).then(function(r) { return r.json(); }).then(function(data) {
+    INV = data.map(function(row) {
+      var p = parseFloat(row.price) || 0;
+      var d = parseFloat(row.discount) || 0;
+      var n = parseFloat(row.net) || Math.max(0, p - d);
+      var pa = parseFloat(row.paid) || 0;
+      var r = parseFloat((n - pa).toFixed(2));
+      return {
+        id: String(row.id || ""), name: row.name || "", studentId: String(row.studentId || ""),
+        course: row.course || "", startMonth: row.startMonth || "", regType: row.regType || "",
+        price: p, discount: d, net: n, paid: pa, remaining: r,
+        method: row.method || "", nextDate: row.nextDate || "",
+        date: gd(String(row.date || "")),
+        branch: row.branch || "", support: row.support || "", sales: row.sales || "",
+        notes: row.notes || "", createdAt: row.createdAt || ""
+      };
+    }).reverse();
+    sv(); rs(); rt();
+  }).catch(function() { rs(); rt(); });
+}
+
+var FL = { a: "كل الفواتير", t: "النهارده", d2: "باقي عليهم", d3: "ET - المدرسين", g2: "General Adults", tn: "Teens", sl2: "Sales", cc: "Call Center" };
+
+function sf(f) {
+  CF = f;
+  var ids = ["a","t","d2","d3","g2","tn","sl2","cc"];
+  ids.forEach(function(id) {
+    var el = document.getElementById("f" + id);
+    if (el) el.className = "btn" + (id === f ? " act" : "");
+  });
+  var fl = document.getElementById("fl2");
+  if (fl) fl.textContent = FL[f] || "";
+  rs(); rt();
+}
+
+function gf() {
+  var td = new Date();
+  var ts = td.getFullYear() + "-" + String(td.getMonth() + 1).padStart(2, "0") + "-" + String(td.getDate()).padStart(2, "0");
+  return INV.filter(function(inv) {
+    var c = (inv.course || "").toLowerCase();
+    if (CF === "t") return gd(inv.date || inv.createdAt || "") === ts;
+    if (CF === "d2") { var r = parseFloat(inv.remaining); if (isNaN(r)) r = parseFloat(inv.net || 0) - parseFloat(inv.paid || 0); return r > 0; }
+    if (CF === "d3") return c.indexOf("et -") > -1 || c.indexOf("للمدرسين") > -1;
+    if (CF === "g2") return c.indexOf("general") > -1 && c.indexOf("teen") === -1;
+    if (CF === "tn") return c.indexOf("teen") > -1;
+    if (CF === "sl2") return c.indexOf("sales") > -1 || c.indexOf("مبيعات") > -1;
+    if (CF === "cc") return c.indexOf("call") > -1;
+    return true;
+  });
+}
+
+function rs() {
+  var f = gf(); var tp = 0; var td = 0;
+  f.forEach(function(inv) { tp += parseFloat(inv.paid) || 0; td += Math.max(0, parseFloat(inv.remaining) || 0); });
+  document.getElementById("sc").textContent = f.length;
+  document.getElementById("sp").textContent = tp.toLocaleString();
+  document.getElementById("sd").textContent = td.toLocaleString();
+}
+
+function rt() {
+  var tb = document.getElementById("tb");
+  var s = (document.getElementById("sr").value || "").toLowerCase();
+  var f = gf().filter(function(inv) {
+    return (inv.name || "").toLowerCase().indexOf(s) > -1 || String(inv.id || "").indexOf(s) > -1 || String(inv.studentId || "").indexOf(s) > -1;
+  });
+  if (!f.length) { tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:#7A8FA6">لا توجد فواتير</td></tr>'; return; }
+  var html = "";
+  for (var i = 0; i < f.length; i++) {
+    var inv = f[i];
+    var st = gs(inv);
+    html += '<tr>';
+    html += '<td style="font-family:monospace;color:#1DB954;font-size:11px">' + inv.id + '</td>';
+    html += '<td><div style="font-weight:700">' + inv.name + '</div><div style="font-size:10px;color:#7A8FA6">' + inv.studentId + '</div></td>';
+    html += '<td style="color:#7A8FA6;font-size:11px">' + inv.course + '</td>';
+    html += '<td>' + parseFloat(inv.net || 0).toLocaleString() + ' ج</td>';
+    html += '<td><span class="' + st.c + '">' + st.l + '</span></td>';
+    html += '<td style="color:#7A8FA6;font-size:11px">' + fd2(inv.date) + '</td>';
+    html += '<td><button class="bs" onclick="oi(\'' + inv.id + '\')">عرض</button><button class="bs" onclick="ei(\'' + inv.id + '\')">تعديل</button><button class="bs r" onclick="di(\'' + inv.id + '\')">حذف</button></td>';
+    html += '</tr>';
+  }
+  tb.innerHTML = html;
+}
+
+function oi(id) {
+  var inv = INV.find(function(i) { return i.id === id; });
+  if (!inv) return;
+  function r(l, v, c) { return '<div class="inv-r"><div class="inv-l">' + l + '</div><div class="' + c + '">' + v + '</div></div>'; }
+  var h = "";
+  h += r("رقم الفاتورة :", inv.id, "cbl");
+  h += r("التاريخ :", fd2(inv.date), "cbl");
+  h += r("الطالب :", (inv.studentId ? inv.studentId + " / " : "") + inv.name, "crd");
+  h += r("الدورة :", inv.course, "crd");
+  if (inv.startMonth) h += r("شهر بدء الدورة :", inv.startMonth, "cbl");
+  if (inv.regType) h += r("نوع التقديم :", inv.regType, "cgr");
+  h += r("القيمة :", parseFloat(inv.price).toLocaleString(), "cdk");
+  h += r("الخصم :", parseFloat(inv.discount || 0).toLocaleString(), "crd");
+  h += r("صافي الفاتورة :", parseFloat(inv.net).toLocaleString(), "cgr");
+  h += r("المسدد مقدماً :", parseFloat(inv.paid).toLocaleString() + (inv.method ? " — " + inv.method : ""), "cdk");
+  h += r("باقي غير مسدد :", parseFloat(inv.remaining || 0).toLocaleString(), parseFloat(inv.remaining) > 0 ? "crd" : "cgr");
+  if (inv.nextDate) h += r("تاريخ السداد التالي :", fd2(inv.nextDate), "cbl");
+  h += r("الفرع :", inv.branch, "cdk");
+  if (inv.support) h += r("Customer Support :", inv.support, "cdk");
+  if (inv.sales) h += r("مسئول المبيعات :", inv.sales, "cdk");
+  if (inv.notes) h += '<div style="padding:8px 0"><div style="font-weight:700;font-size:12px;color:#1a1a1a;margin-bottom:4px">ملاحظات :</div><div style="font-size:12px;color:#1F4E8C;font-weight:700;line-height:2;text-align:right">' + inv.notes.replace(/\n/g, "<br>") + '</div></div>';
+  document.getElementById("ic").innerHTML = h;
+  document.getElementById("main").style.display = "none";
+  document.getElementById("inv-view").style.display = "block";
+}
+
+function ci() {
+  document.getElementById("inv-view").style.display = "none";
+  document.getElementById("main").style.display = "block";
+}
+
+function qsearch() {
+  var q = document.getElementById("qs").value.trim();
+  var res = document.getElementById("qr");
+  if (!q) { res.innerHTML = ""; return; }
+  var inv = INV.find(function(i) { return i.id === q || i.studentId === q; });
+  if (!inv) { res.innerHTML = '<div style="color:#EF4444;font-size:12px;margin-top:6px">❌ لا توجد نتيجة</div>'; return; }
+  var st = gs(inv);
+  res.innerHTML = '<div style="background:rgba(29,185,84,.08);border:1px solid rgba(29,185,84,.25);border-radius:8px;padding:10px 12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><div><div style="font-weight:700">' + inv.name + '</div><div style="font-size:11px;color:#7A8FA6">' + inv.course + ' — ' + parseFloat(inv.net).toLocaleString() + ' ج <span class="' + st.c + '">' + st.l + '</span></div></div><div><button class="bs" onclick="oi(\'' + inv.id + '\')">عرض</button><button class="bs" onclick="ei(\'' + inv.id + '\')">تعديل</button></div></div>';
+}
+
+function toast(m) {
+  var t = document.getElementById("toast");
+  t.textContent = m; t.style.display = "block";
+  setTimeout(function() { t.style.display = "none"; }, 3000);
+}
+
+init();
+</script>
+</body>
+</html>
